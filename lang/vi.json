@@ -1,0 +1,13 @@
+{
+    "notifySuccess": "Thực hiện thành công.",
+    "notifyFail": "Thực hiện không thành công.",
+    "LoginSuccess": "Đăng nhập thành công.",
+    "LoginFail": "Tài khoản hoặc mật khẩu không đúng.",
+    "SendMailGetPasswordSuccess": "Thực hiện thành công. Vui lòng kiểm tra email của bạn để lấy lại mật khẩu.",
+    "noData": "Không tìm thấy dữ liệu.",
+    "notFoundUrl": "Không tìm thấy đường dẫn này",
+    "tooManyRequest": "Quá nhiều yêu cầu xử lý cho endpoint này.",
+    "unauthenticate": "Xác thực không thành công.",
+    "productNoVariable": "Sản phẩm không có sẵn.",
+    "updateCartNotCampatible": "id phải tương thích với qty cho từng id đã truyền vào"
+}
