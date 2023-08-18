@@ -4,7 +4,7 @@ namespace App\Api\V1\Http\Controllers\Product;
 
 use App\Admin\Http\Controllers\Controller;
 
-class ProductAuhController extends Controller
+class ProductAuthController extends Controller
 {
     public function index(){
 

@@ -116,12 +116,6 @@ return [
                 'icon' => '<i class="ti ti-list"></i>',
                 'roles' => [],
             ],
-            // [
-            //     'title' => 'Cấp bật thành viên',
-            //     'routeName' => 'admin.user.level.index',
-            //     'icon' => '<i class="ti ti-user-up"></i>',
-            //     'roles' => [],
-            // ],
         ]
     ],
     [

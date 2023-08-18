@@ -41,9 +41,7 @@ class ProductCategoryController extends Controller
         ];
     }
     public function index(ProductCategoryDataTable $dataTable){
-        return $dataTable->render($this->view['index'], [
-            'status' => ProductCategoryStatus::asSelectArray()
-        ]);
+        return $dataTable->render($this->view['index']);
     }
 
     public function create(){

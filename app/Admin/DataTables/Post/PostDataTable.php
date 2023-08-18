@@ -5,6 +5,7 @@ namespace App\Admin\DataTables\Post;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Post\PostRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\Post\PostStatus;
 
 class PostDataTable extends BaseDataTable
 {
@@ -26,6 +27,10 @@ class PostDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'postTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -34,6 +39,20 @@ class PostDataTable extends BaseDataTable
             'feature_image' => 'admin.posts.datatable.feature-image',
             'editlink' => 'admin.posts.datatable.editlink',
             'status' => 'admin.posts.datatable.status',
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [1, 2, 3];
+
+        $this->columnSearchDate = [3];
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 2,
+                'data' => PostStatus::asSelectArray()
+            ],
         ];
     }
     /**
@@ -74,7 +93,7 @@ class PostDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('postTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -124,19 +143,5 @@ class PostDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['feature_image', 'title', 'status', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#postTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

@@ -26,6 +26,10 @@ class ProductCategoryDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'productCategoryTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -35,6 +39,11 @@ class ProductCategoryDataTable extends BaseDataTable
             'avatar' => 'admin.product_categories.datatable.avatar',
             'status' => 'admin.product_categories.datatable.status',
         ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [0];
     }
     /**
      * Build DataTable class.
@@ -77,7 +86,7 @@ class ProductCategoryDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('productCategoryTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->dom('Bfrtip')
         ->orderBy(0)
@@ -135,19 +144,5 @@ class ProductCategoryDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['name', 'avatar', 'status', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#productCategoryTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

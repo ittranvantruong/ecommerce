@@ -46,6 +46,7 @@
 
 {{ $dataTable->scripts() }}
 
-@include('admin.users.scripts.datatable')
-
+@include('admin.scripts.datatable-toggle-columns', [
+    'id_table' => $dataTable->getTableAttribute('id')
+])
 @endpush

@@ -45,7 +45,7 @@ class AdminController extends Controller
     }
 
     public function create(){
-        return view($this->view['create'], ['roles' => AdminRoles::asSelectArray()]);
+        return view($this->view['create'], ['roles' => auth('admin')->user()->roles->asArraySelectListRolesAdminAfterCase()]);
     }
 
     public function store(AdminRequest $request){
@@ -63,7 +63,7 @@ class AdminController extends Controller
             $this->view['edit'], 
             [
                 'admin' => $instance, 
-                'roles' => AdminRoles::asSelectArray() 
+                'roles' => auth('admin')->user()->roles->asArraySelectListRolesAdminAfterCase()
             ], 
         );
 

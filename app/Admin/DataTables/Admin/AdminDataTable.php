@@ -5,6 +5,7 @@ namespace App\Admin\DataTables\Admin;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Admin\AdminRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\Admin\AdminRoles;
 
 class AdminDataTable extends BaseDataTable
 {
@@ -25,12 +26,29 @@ class AdminDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'adminTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
         return [
             'action' => 'admin.admins.datatable.action',
             'edit-link' => 'admin.admins.datatable.edit-link',
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [1, 2, 3, 4, 5];
+        $this->columnSearchDate = [5]; 
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 4,
+                'data' => auth('admin')->user()->roles->asArraySelectListRolesAdminAfterCase()
+            ],
         ];
     }
     /**
@@ -60,7 +78,7 @@ class AdminDataTable extends BaseDataTable
      */
     public function query()
     {
-        return $this->repository->getQueryBuilder();
+        return $this->repository->getQueryBuilderFollowRole();
     }
 
     /**
@@ -71,7 +89,7 @@ class AdminDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('adminTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -128,19 +146,5 @@ class AdminDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['fullname', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#adminTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

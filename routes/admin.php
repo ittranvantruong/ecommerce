@@ -110,17 +110,6 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function(){
             Route::post('/them', 'store')->name('store');
             Route::delete('/xoa/{id}', 'delete')->name('delete');
         });
-        Route::controller(App\Admin\Http\Controllers\User\UserLevelController::class)
-        ->prefix('/levels')
-        ->as('level.')
-        ->group(function(){
-            Route::get('/them', 'create')->name('create');
-            Route::get('/', 'index')->name('index');
-            Route::get('/sua/{id}', 'edit')->name('edit');
-            Route::put('/sua', 'update')->name('update');
-            Route::post('/them', 'store')->name('store');
-            Route::delete('/xoa/{id}', 'delete')->name('delete');
-        });
         // Route::get('/select-search', [AdminSearchController::class, 'selectSearch'])->name('selectsearch');
     });
     //admin

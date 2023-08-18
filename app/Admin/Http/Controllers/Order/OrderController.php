@@ -49,9 +49,7 @@ class OrderController extends Controller
         ];
     }
     public function index(OrderDataTable $dataTable){
-        return $dataTable->render($this->view['index'], [
-            'status' => OrderStatus::asSelectArray()
-        ]);
+        return $dataTable->render($this->view['index']);
     }
     public function create(){
         return view($this->view['create']);

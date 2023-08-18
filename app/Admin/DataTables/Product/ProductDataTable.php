@@ -4,7 +4,10 @@ namespace App\Admin\DataTables\Product;
 
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
+use App\Admin\Repositories\ProductCategory\ProductCategoryRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\Product\ProductInstock;
+use App\Enums\Product\ProductStatus;
 
 class ProductDataTable extends BaseDataTable
 {
@@ -19,13 +22,19 @@ class ProductDataTable extends BaseDataTable
      */
     // protected array $actions = ['pageLength', 'excel', 'reset', 'reload'];
     protected array $actions = ['reset', 'reload'];
-
+    protected $repositoryCat;
     public function __construct(
-        ProductRepositoryInterface $repository
+        ProductRepositoryInterface $repository,
+        ProductCategoryRepositoryInterface $repositoryCat
     ){
         parent::__construct();
 
         $this->repository = $repository;
+        $this->repositoryCat = $repositoryCat;
+
+        $this->nameTable = 'productTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -37,6 +46,32 @@ class ProductDataTable extends BaseDataTable
             'feature_image' => 'admin.products.datatable.feature-image',
             'price' => 'admin.products.datatable.price',
             'categories' => 'admin.products.datatable.categories'
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [1, 2, 3, 5, 6];
+
+        $this->columnSearchDate = [6];
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 2,
+                'data' => ProductInstock::asSelectArray()
+            ],
+            [
+                'column' => 3,
+                'data' => ProductStatus::asSelectArray()
+            ]
+        ];
+        $this->columnSearchSelect2 = [
+            [
+                'column' => 5,
+                'data' => $this->repositoryCat->getFlatTree()->map(function($category){
+                    return [$category->id => generate_text_depth_tree($category->depth).$category->name];
+                })
+            ]
         ];
     }
     /**
@@ -81,7 +116,7 @@ class ProductDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('productTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -152,21 +187,5 @@ class ProductDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['feature_image', 'name', 'in_stock', 'status', 'categories', 'price', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#productTable');
-
-            searchColumsDataTable(this);
-        
-            addSelect2();
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

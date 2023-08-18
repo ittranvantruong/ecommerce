@@ -45,15 +45,7 @@ class ProductController extends Controller
         ];
     }
     public function index(ProductDataTable $dataTable){
-        $categories = $this->repositoryCategory->getFlatTree();
-        $categories = $categories->map(function($category){
-            return [$category->id => generate_text_depth_tree($category->depth).$category->name];
-        });
-        return $dataTable->render($this->view['index'], [
-            'categories' => $categories,
-            'in_stock' => ProductInstock::asSelectArray(),
-            'status' => ProductStatus::asSelectArray(),
-        ]);
+        return $dataTable->render($this->view['index']);
     }
 
     public function create(){

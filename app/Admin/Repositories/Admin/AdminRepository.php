@@ -32,7 +32,11 @@ class AdminRepository extends EloquentRepository implements AdminRepositoryInter
             ->orWhere('fullname', 'LIKE', '%'.$key.'%');
         });
     }
-    
+    public function getQueryBuilderFollowRole(){
+        $this->getQueryBuilderOrderBy();
+        $this->instance = $this->instance->whereIn('roles', auth('admin')->user()->roles->listRolesAdminAfterCase());
+        return $this->instance;
+    }
     public function getQueryBuilderOrderBy($column = 'id', $sort = 'DESC'){
         $this->getQueryBuilder();
         $this->instance = $this->instance->orderBy($column, $sort);

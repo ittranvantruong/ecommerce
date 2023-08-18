@@ -5,6 +5,7 @@ namespace App\Admin\DataTables\Order;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\Order\OrderStatus;
 
 class OrderDataTable extends BaseDataTable
 {
@@ -26,6 +27,10 @@ class OrderDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'orderTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -34,6 +39,20 @@ class OrderDataTable extends BaseDataTable
             'edit_link' => 'admin.orders.datatable.edit-link',
             'status' => 'admin.orders.datatable.status',
             'user' => 'admin.orders.datatable.user',
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [0, 1, 2, 4];
+
+        $this->columnSearchDate = [4];
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 2,
+                'data' => OrderStatus::asSelectArray()
+            ],
         ];
     }
     /**
@@ -74,7 +93,7 @@ class OrderDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('orderTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -120,19 +139,5 @@ class OrderDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['id', 'status', 'user', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#orderTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

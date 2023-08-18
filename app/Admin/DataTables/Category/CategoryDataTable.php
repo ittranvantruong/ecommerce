@@ -5,6 +5,7 @@ namespace App\Admin\DataTables\Category;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\Category\CategoryStatus;
 
 class CategoryDataTable extends BaseDataTable
 {
@@ -26,6 +27,10 @@ class CategoryDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'categoryTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -33,6 +38,18 @@ class CategoryDataTable extends BaseDataTable
             'action' => 'admin.categories.datatable.action',
             'edit_link' => 'admin.categories.datatable.edit-link',
             'status' => 'admin.categories.datatable.status',
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [0, 1];
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 1,
+                'data' => CategoryStatus::asSelectArray()
+            ],
         ];
     }
     /**
@@ -72,7 +89,7 @@ class CategoryDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('categoryTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -113,19 +130,5 @@ class CategoryDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['name', 'status', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#categoryTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }

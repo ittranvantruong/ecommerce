@@ -29,6 +29,44 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
     return s.join(dec);
 }
+function searchColumsDataTable(datatable, column_search = [], column_date = [], column_select = [], column_select2 = [] ) {
+    datatable.api().columns(column_search).every(function () {
+        
+        var column = this, 
+        input = document.createElement("input"),
+        findColumnSelect, findColumnSelect2;
+        input.setAttribute('class', 'form-control');
+
+        if(column_date.length > 0 && column_date.indexOf(column.selector.cols) !== -1){
+
+            input.setAttribute('type', 'date');
+
+        }else if(findColumnSelect = column_select.find(obj => obj.column === column.selector.cols)){
+
+            input = document.createElement("select");
+            createSelectColumnUniqueDatatableAll(input, findColumnSelect.data);
+
+        }else if(findColumnSelect2 = column_select2.find(obj => obj.column === column.selector.cols)){
+
+            var resultColumnSelect2 = $.grep(column_select2, function(element) {
+                return element.column === column.selector.cols;
+            });
+
+            if(resultColumnSelect2.length > 0){
+                input = document.createElement("select");
+                createSelect2ColumnDatatable(input, findColumnSelect2.data);
+            }
+            
+        }
+
+        input.setAttribute('placeholder', 'Nhập từ khóa');
+
+        $(input).appendTo($(column.footer()).empty())
+        .on('change', function () {
+            column.search($(this).val(), false, false, true).draw();
+        });
+    }); 
+}
 function formatPrice(price = 0){
     price = number_format(price, 0, ',', ',');
     return positionCurrency == 'left' ? currency + price : price + currency;
@@ -76,7 +114,7 @@ function createSelectColumnUniqueDatatable(column, input){
 function moveSearchColumnsDatatable(idTable){
     $(idTable + ' thead').append($(idTable + ' tfoot tr'));
 }
-function createSelect2ColumnCategory(input, data){
+function createSelect2ColumnDatatable(input, data){
     input.setAttribute('class', 'form-select select2-bs5');
     input.setAttribute('multiple', 'true');
 
@@ -278,6 +316,21 @@ function addOverlayLoading(elm){
 $(document).ready(function () {
     $("form").submit(function(){
 		addOverlayLoading(this);
+    });
+    var currentLocation = window.location.href; // Lấy đường dẫn của trang hiện tại
+    // Duyệt qua từng phần tử li trong menu
+    $("#sidebar-menu li").each(function() {
+        var menuItem = $(this);
+        var menuLink = menuItem.find("a");
+        $(menuLink).each(function() {
+            linkLocation = $(this).attr('href');
+            // So sánh đường dẫn của menu item với đường dẫn của trang hiện tại
+            if (linkLocation === currentLocation) {
+                $(this).addClass('active');
+                menuItem.find(".dropdown-toggle.nav-link, .dropdown-menu").addClass("show");
+                // menuItem.find(".dropdown-toggle.nav-link").addClass("show");
+            }
+        });
     });
 });
 $(document).on('click', '.add-image-ckfinder', function(e){

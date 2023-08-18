@@ -233,34 +233,4 @@ return [
             'addClass' => 'text-center'
         ],
     ],
-    'user_level' => [
-        'position' => [
-            'title' => 'Thứ tự',
-            'orderable' => false,
-            'visible' => true
-        ],
-        'name' => [
-            'title' => 'Tên cấp bậc',
-            'orderable' => false
-        ],
-        'type_discount' => [
-            'title' => 'Loại',
-            'orderable' => false,
-        ],
-        'min_amount' => [
-            'title' => 'Số tiên lên cấp',
-            'orderable' => false
-        ],
-        'plain_value' => [
-            'title' => 'Giá trị',
-            'orderable' => false
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center'
-        ],
-    ],
 ];

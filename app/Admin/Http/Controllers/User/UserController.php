@@ -41,9 +41,7 @@ class UserController extends Controller
         ];
     }
     public function index(UserDataTable $dataTable){
-        return $dataTable->render($this->view['index'], [
-            'gender' => UserGender::asSelectArray()
-        ]);
+        return $dataTable->render($this->view['index']);
     }
 
     public function create(){

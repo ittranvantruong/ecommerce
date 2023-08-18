@@ -45,9 +45,7 @@ class PostController extends Controller
         ];
     }
     public function index(PostDataTable $dataTable){
-        return $dataTable->render($this->view['index'], [
-            'status' => PostStatus::asSelectArray()
-        ]);
+        return $dataTable->render($this->view['index']);
     }
 
     public function create(){

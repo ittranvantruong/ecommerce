@@ -9,6 +9,12 @@ abstract class BaseDataTable extends DataTable
 {
     protected $repository;
     /**
+     * ['pageLength', 'excel', 'reset', 'reload']
+     *
+     * @var array
+     */
+    protected $action = ['reset', 'reload'];
+    /**
      * Mảng chứa đường dẫn tới views
      *
      * @var array
@@ -32,24 +38,28 @@ abstract class BaseDataTable extends DataTable
      * @var array
      */
     protected $buildColumns = [];
-    /**
-     * config columns
-     *
-     * @var array
-     */
+
     protected $customColumns = [];
-    /**
-     * remove columns
-     *
-     * @var array
-     */
+
     protected $removeColumns = [];
+
+    protected $columnAllSearch = [];
+
+    protected $columnSearchDate = [];
+
+    protected $columnSearchSelect = [];
+
+    protected $columnSearchSelect2 = [];
+
+    protected $nameTable = 'tableID';
     /**
      * config search columns
      *
      * @var array
      */
     protected $parameters;
+
+
     
     public function __construct(){
         
@@ -61,6 +71,8 @@ abstract class BaseDataTable extends DataTable
         
     }
 
+    abstract protected function setCustomColumns();
+
     public function getParameters(){
         return $this->parameters ?? [
             'responsive' => true,
@@ -68,7 +80,7 @@ abstract class BaseDataTable extends DataTable
             'autoWidth' => false,
             // 'searching' => false,
             // 'searchDelay' => 350,
-            'lengthMenu' => [ [3, 25, 50, -1], [20, 50, 100, "All"] ],
+            // 'lengthMenu' => [ [3, 25, 50, -1], [20, 50, 100, "All"] ],
             'language' => [
                 'url' => url('/public/libs/datatables/language.json')
             ]
@@ -86,6 +98,7 @@ abstract class BaseDataTable extends DataTable
     public function setView(){
         $this->view = $this->getView();
     }
+
 
     protected function getColumns()
     {
@@ -119,5 +132,19 @@ abstract class BaseDataTable extends DataTable
             }
         }
     }
-    abstract protected function setCustomColumns();
+
+    protected function htmlParameters(){
+        
+        $this->parameters['buttons'] = $this->actions;
+
+        $this->parameters['initComplete'] = "function () {
+
+            moveSearchColumnsDatatable('#{$this->nameTable}');
+
+            searchColumsDataTable(this, ".json_encode($this->columnAllSearch).", ".json_encode($this->columnSearchDate).", ".json_encode($this->columnSearchSelect).", ".json_encode($this->columnSearchSelect2).");
+        }";
+
+        $this->instanceHtml = $this->instanceHtml
+        ->parameters($this->parameters);
+    }
 }

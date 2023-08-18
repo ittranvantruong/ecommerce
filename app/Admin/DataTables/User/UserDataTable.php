@@ -5,6 +5,7 @@ namespace App\Admin\DataTables\User;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\User\UserRepositoryInterface;
 use App\Admin\Traits\GetConfig;
+use App\Enums\User\UserGender;
 
 class UserDataTable extends BaseDataTable
 {
@@ -26,12 +27,30 @@ class UserDataTable extends BaseDataTable
         parent::__construct();
 
         $this->repository = $repository;
+
+        $this->nameTable = 'userTable';
+
+        $this->configColumnSearch();
     }
 
     public function getView(){
         return [
             'action' => 'admin.users.datatable.action',
             'edit_link' => 'admin.users.datatable.edit-link',
+        ];
+    }
+
+    public function configColumnSearch(){
+
+        $this->columnAllSearch = [0, 1, 2, 3, 4, 5];
+
+        $this->columnSearchDate = [5];
+        
+        $this->columnSearchSelect = [
+            [
+                'column' => 4,
+                'data' => UserGender::asSelectArray()
+            ]
         ];
     }
     /**
@@ -72,7 +91,7 @@ class UserDataTable extends BaseDataTable
     public function html()
     {
         $this->instanceHtml = $this->builder()
-        ->setTableId('userTable')
+        ->setTableId($this->nameTable)
         ->columns($this->getColumns())
         ->minifiedAjax()
         ->dom('Bfrtip')
@@ -130,19 +149,5 @@ class UserDataTable extends BaseDataTable
     }
     protected function rawColumnsNew(){
         $this->instanceDataTable = $this->instanceDataTable->rawColumns(['fullname', 'action']);
-    }
-    protected function htmlParameters(){
-
-        $this->parameters['buttons'] = $this->actions;
-
-        $this->parameters['initComplete'] = "function () {
-
-            moveSearchColumnsDatatable('#userTable');
-
-            searchColumsDataTable(this);
-        }";
-
-        $this->instanceHtml = $this->instanceHtml
-        ->parameters($this->parameters);
     }
 }
