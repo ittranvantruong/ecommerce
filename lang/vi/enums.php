@@ -35,10 +35,6 @@ return [
         ProductPurchaseQtyType::Amount->value => 'Số tiền',
         ProductPurchaseQtyType::Percent->value => 'Phần trăm'
     ],
-    UserLevelTypeDiscount::class => [
-        UserLevelTypeDiscount::Amount->value => 'Số tiền',
-        UserLevelTypeDiscount::Percent->value => 'Phần trăm'
-    ],
     OrderStatus::class => [
         OrderStatus::Processing->value => 'Đang xử lý',
         OrderStatus::Processed->value => 'Đã xử lý',

@@ -16,4 +16,8 @@ class OrderDetail extends Model
     protected $casts = [
         'detail' => AsArrayObject::class
     ];
+
+    public function order(){
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 }

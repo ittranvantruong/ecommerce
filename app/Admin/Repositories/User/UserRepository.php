@@ -11,7 +11,9 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     public function getModel(){
         return User::class;
     }
-
+    public function count(){
+        return $this->model->count();
+    }
     public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'fullname', 'phone'], $limit = 10){
         $this->instance = $this->model->select($select);
         $this->getQueryBuilderFindByKey($keySearch);
