@@ -56,15 +56,15 @@ class User extends Authenticatable
         'status' => UserStatus::class
     ];
 
-    public function levels(){
-        return $this->belongsTo(UserLevel::class, 'user_id', 'id');
-    }
-
     public function orders(){
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
     public function productWishlist(){
         return $this->belongsToMany(Product::class, 'product_wishlists', 'user_id', 'product_id');
+    }
+
+    public function productReviews(){
+        return $this->hasMany(Review::class, 'user_id', 'id');
     }
 }

@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->double('price')->default(0);
-            $table->double('price_selling')->default(0);
-            $table->double('price_promotion')->default(0);
+            $table->double('price');
+            $table->double('price_selling')->nullable();
+            $table->double('price_promotion')->nullable();
             $table->char('sku', 50)->nullable();
             $table->boolean('manager_stock')->default(false);
             $table->integer('qty')->default(0);
@@ -29,8 +29,9 @@ return new class extends Migration
             $table->tinyInteger('status')->default(ProductStatus::Published->value);
             $table->text('feature_image')->nullable();
             $table->text('gallery')->nullable();
-            $table->text('short_desc')->nullable();
-            $table->longText('desc')->nullable();
+            $table->integer('viewed')->default(0);
+            $table->longText('title_seo')->nullable();
+            $table->text('desc_seo')->nullable();
             $table->timestamps();
         });
     }

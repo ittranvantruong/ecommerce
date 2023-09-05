@@ -24,6 +24,15 @@ Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartControlle
     Route::delete('/delete', 'delete')->name('delete');
 });
 
+//review product
+Route::controller(App\Api\V1\Http\Controllers\Product\ProductReviewController::class)
+->prefix('/product-review')
+->as('product_review.')
+->group(function(){
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store')->middleware('auth:sanctum');
+});
+
 //product category
 Route::prefix('/product-category')
 ->as('product_category.')

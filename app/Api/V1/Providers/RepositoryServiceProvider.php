@@ -17,6 +17,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Api\V1\Repositories\ShoppingCart\ShoppingCartRepositoryInterface' => 'App\Api\V1\Repositories\ShoppingCart\ShoppingCartRepository',
         'App\Api\V1\Repositories\Order\OrderRepositoryInterface' => 'App\Api\V1\Repositories\Order\OrderRepository',
         'App\Api\V1\Repositories\Order\OrderDetailRepositoryInterface' => 'App\Api\V1\Repositories\Order\OrderDetailRepository',
+        'App\Api\V1\Repositories\Product\ProductReviewRepositoryInterface' => 'App\Api\V1\Repositories\Product\ProductReviewRepository',
     ];
     /**
      * Register services.

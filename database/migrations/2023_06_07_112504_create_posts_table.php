@@ -23,6 +23,9 @@ return new class extends Migration
             $table->tinyInteger('status')->default(PostStatus::Published->value);
             $table->text('excerpt')->nullable();
             $table->longText('content')->nullable();
+            $table->integer('viewed')->default(0);
+            $table->longText('title_seo')->nullable();
+            $table->text('desc_seo')->nullable();
             $table->dateTime('posted_at');
             $table->timestamps();
         });
