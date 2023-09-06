@@ -45,7 +45,14 @@ class ProductController extends Controller
         ];
     }
     public function index(ProductDataTable $dataTable){
-        return $dataTable->render($this->view['index']);
+        $actionMultiple = [
+            'delete' => 'Xoá',
+            'publishedStatus' => 'Đã xuất bản',
+            'draftStatus' => 'Bản nháp'
+        ];
+        return $dataTable->render($this->view['index'], [
+            'actionMultiple' => $actionMultiple
+        ]);
     }
 
     public function create(){
@@ -54,8 +61,7 @@ class ProductController extends Controller
             [
                 'status' => ProductStatus::asSelectArray(),
                 'product_categories' => $productCategories,
-                'in_stock' => ProductInstock::asSelectArray(),
-                'product_purchase_qty_type' => ProductPurchaseQtyType::asSelectArray()
+                'in_stock' => ProductInstock::asSelectArray()
             ]
         );
     }
@@ -72,8 +78,7 @@ class ProductController extends Controller
     public function edit($id, Request $request){
         
         $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
-            'categories:id',
-            'purchaseQty'
+            'categories:id'
         ]);
         $productOfCategory = $product->categories->pluck('id')->toArray();
         $productCategories = $this->repositoryCategory->getFlatTree();
@@ -84,8 +89,7 @@ class ProductController extends Controller
                 'product_of_category' => $productOfCategory,
                 'status' => ProductStatus::asSelectArray(),
                 'product_categories' => $productCategories,
-                'in_stock' => ProductInstock::asSelectArray(),
-                'product_purchase_qty_type' => ProductPurchaseQtyType::asSelectArray()
+                'in_stock' => ProductInstock::asSelectArray()
             ]
         );
     }
@@ -116,4 +120,12 @@ class ProductController extends Controller
         return view($this->view['search_render_list'], compact('products'));
     }
 
+    public function actionMultipleRecode(Request $request){
+        $boolean = $this->service->actionMultipleRecode($request);
+        if($boolean){
+            return back()->with('success', __('notifySuccess'));
+        }
+        return back()->with('error', __('notifyFail'));
+    }
+    
 }

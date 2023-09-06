@@ -66,6 +66,13 @@ return [
         ],
     ],
     'product' => [
+        'checkbox' => [
+            'title' => 'Chọn',
+            'orderable' => false,
+            'addClass' => 'text-center',
+            'width' => '10px',
+            'footer' => '<input type="checkbox" class="check-all" />'
+        ],
         'feature_image' => [
             'title' => 'Ảnh',
             'orderable' => false,
@@ -95,6 +102,12 @@ return [
         ],
         'categories' => [
             'title' => 'Danh mục',
+            'orderable' => false,
+            'visible' => false,
+            'addClass' => 'align-middle'
+        ],
+        'viewed' => [
+            'title' => 'Lượt xem',
             'orderable' => false,
             'visible' => false,
             'addClass' => 'align-middle'

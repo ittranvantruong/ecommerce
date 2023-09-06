@@ -42,10 +42,15 @@
                     <x-link :href="route('admin.product.create')" class="btn btn-primary"><i class="ti ti-plus"></i>{{ __('Thêm sản phẩm') }}</x-link>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive position-relative">
-                        <x-admin.partials.toggle-column-datatable />
-                        {{$dataTable->table(['class' => 'table table-bordered', 'style' => 'min-width: 900px;'], true)}}
-                    </div>
+                    <x-form id="formMultiple" :action="route('admin.product.multiple')" type="post" :validate="true">
+                        <div class="table-responsive position-relative">
+                            <x-admin.partials.toggle-column-datatable />
+                            @isset($actionMultiple)
+                                <x-admin.partials.select-action-multiple :actionMultiple="$actionMultiple"/>
+                            @endisset
+                            {{$dataTable->table(['class' => 'table table-bordered', 'style' => 'min-width: 900px;'], true)}}
+                        </div>
+                    </x-form>
                 </div>
             </div>
         </div>

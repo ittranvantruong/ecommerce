@@ -11,27 +11,25 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
     public function getModel(){
         return Product::class;
     }
-    public function updateWithAllRelations(array $product, array $purchase_qty = [], array $categories_id = []){
+    
+    public function updateMultipleByIds(array $ids, array $data){
+        $this->instance = $this->model->whereIn('id', $ids)->update($data);
+        return $this->instance;
+    }
+
+    public function updateWithAllRelations(array $product, array $categories_id = []){
         $this->instance = $this->update($product['id'], $product);
         if(!empty($categories_id)){
             $this->syncCategories($this->instance, $categories_id);
         }
         
-        $this->instance->purchaseQty()->delete();
-
-        if(!empty($purchase_qty)){
-            $this->instance->purchaseQty()->createMany($purchase_qty);
-        }
         return $this->instance;
     }
     
-    public function createWithAllRelations(array $product, array $purchase_qty = [], array $categories_id = []){
+    public function createWithAllRelations(array $product, array $categories_id = []){
         $this->instance = $this->create($product);
         if(!empty($categories_id)){
             $this->attachCategories($this->instance, $categories_id);
-        }
-        if(!empty($purchase_qty)){
-            $this->instance->purchaseQty()->createMany($purchase_qty);
         }
         return $this->instance;
     }

@@ -7,7 +7,6 @@
             <div class="col-12 col-md-9 ps-0">
                 <div id="tabDataProductContent" class="tab-content">
                     @include('admin.products.data.tabs.tab-price')
-                    @include('admin.products.data.tabs.tab-price-qty')
                     @include('admin.products.data.tabs.tab-inventory')
                 </div>
             </div>

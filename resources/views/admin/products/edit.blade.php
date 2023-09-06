@@ -40,5 +40,4 @@
 @include('ckfinder::setup')
 @endpush
 @push('custom-js')
-@include('admin.products.scripts.scripts')
 @endpush

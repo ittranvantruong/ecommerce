@@ -3,11 +3,9 @@
 use App\Enums\Admin\AdminRoles;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Product\ProductInstock;
-use App\Enums\Product\ProductPurchaseQtyType;
 use App\Enums\Product\ProductStatus;
-use App\Enums\User\UserLevelTypeDiscount;
 use App\Enums\ProductCategory\ProductCategoryStatus;
-use App\Enums\User\{UserGender, UserVip, UserRoles};
+use App\Enums\User\{UserGender};
 
 return [
     AdminRoles::class => [
@@ -30,10 +28,6 @@ return [
     ProductInstock::class => [
         ProductInstock::Yes->value => 'Còn hàng',
         ProductInstock::No->value => 'Hết hàng'
-    ],
-    ProductPurchaseQtyType::class => [
-        ProductPurchaseQtyType::Amount->value => 'Số tiền',
-        ProductPurchaseQtyType::Percent->value => 'Phần trăm'
     ],
     OrderStatus::class => [
         OrderStatus::Processing->value => 'Đang xử lý',

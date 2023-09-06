@@ -83,6 +83,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function(){
         Route::put('/sua', 'update')->name('update');
         Route::post('/them', 'store')->name('store');
         Route::delete('/xoa/{id}', 'delete')->name('delete');
+        Route::post('/xu-ly-nhieu-ban-ghi', 'actionMultipleRecode')->name('multiple');
     });
 
     //Product Category

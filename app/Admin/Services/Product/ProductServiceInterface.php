@@ -30,4 +30,5 @@ interface ProductServiceInterface
      */
     public function delete($id);
 
+    public function actionMultipleRecode(Request $request);
 }

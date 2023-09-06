@@ -45,29 +45,30 @@ class ProductDataTable extends BaseDataTable
             'status' => 'admin.products.datatable.status',
             'feature_image' => 'admin.products.datatable.feature-image',
             'price' => 'admin.products.datatable.price',
-            'categories' => 'admin.products.datatable.categories'
+            'categories' => 'admin.products.datatable.categories',
+            'checkbox' => 'admin.products.datatable.checkbox'
         ];
     }
 
     public function configColumnSearch(){
 
-        $this->columnAllSearch = [1, 2, 3, 5, 6];
+        $this->columnAllSearch = [2, 3, 4, 6, 8];
 
-        $this->columnSearchDate = [6];
+        $this->columnSearchDate = [8];
         
         $this->columnSearchSelect = [
             [
-                'column' => 2,
+                'column' => 3,
                 'data' => ProductInstock::asSelectArray()
             ],
             [
-                'column' => 3,
+                'column' => 4,
                 'data' => ProductStatus::asSelectArray()
             ]
         ];
         $this->columnSearchSelect2 = [
             [
-                'column' => 5,
+                'column' => 6,
                 'data' => $this->repositoryCat->getFlatTree()->map(function($category){
                     return [$category->id => generate_text_depth_tree($category->depth).$category->name];
                 })
@@ -92,6 +93,7 @@ class ProductDataTable extends BaseDataTable
         $this->editColumnStatus();
         $this->editColumnCategoreis();
         $this->editColumnCreatedAt();
+        $this->addColumnCheckbox();
         $this->addColumnAction();
         $this->rawColumnsNew();
         return $this->instanceDataTable;
@@ -182,10 +184,13 @@ class ProductDataTable extends BaseDataTable
     protected function editColumnCreatedAt(){
         $this->instanceDataTable = $this->instanceDataTable->editColumn('created_at', '{{ date("d-m-Y", strtotime($created_at)) }}');
     }
+    protected function addColumnCheckbox(){
+        $this->instanceDataTable = $this->instanceDataTable->addColumn('checkbox', $this->view['checkbox']);
+    }
     protected function addColumnAction(){
         $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
     }
     protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['feature_image', 'name', 'in_stock', 'status', 'categories', 'price', 'action']);
+        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['checkbox', 'feature_image', 'name', 'in_stock', 'status', 'categories', 'price', 'action']);
     }
 }

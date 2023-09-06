@@ -6,8 +6,11 @@ use App\Models\Product;
 
 interface ProductRepositoryInterface extends EloquentRepositoryInterface
 {
-    public function updateWithAllRelations(array $product,array $purchase_qty = [], array $categories_id = []);
-    public function createWithAllRelations(array $product,array $purchase_qty = [], array $categories_id = []);
+    public function updateMultipleByIds(array $ids, array $data);
+
+    public function updateWithAllRelations(array $product, array $categories_id = []);
+    
+    public function createWithAllRelations(array $product, array $categories_id = []);
 
     public function getByIdsAndOrderByIds(array $ids);
     public function getByColumnsWithRelationsLimit(array $data, array $relations = [], $limit = 10);

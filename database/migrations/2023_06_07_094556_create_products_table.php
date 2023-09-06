@@ -29,6 +29,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(ProductStatus::Published->value);
             $table->text('feature_image')->nullable();
             $table->text('gallery')->nullable();
+            $table->text('desc')->nullable();
             $table->integer('viewed')->default(0);
             $table->longText('title_seo')->nullable();
             $table->text('desc_seo')->nullable();
