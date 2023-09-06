@@ -33,6 +33,9 @@ class ProductRepository extends AdminProductRepository implements ProductReposit
 
     public function findOrFailWithRelations($id, array $relations = []){
         $this->findByPublishedOrFail($id);
+        $this->instance->update([
+            'viewed' => $this->instance->viewed + 1
+        ]);
         if(!empty($relations)){
             $this->instance = $this->instance->load($relations);
         }

@@ -8,10 +8,8 @@
                 <h3>{{ __('Thông tin chung') }}</h3>
                 <p>{{ __('Mã đơn hàng: #:id', ['id' => $order->id]) }}</p>
                 <div class="mb-3">
-                    <label for="">{{ __('Khách hàng') }}</label>
-                    <x-select class="select2-bs5-ajax" name="order[user_id]" :required="true">
-                        <x-select-option :option="$order->user_id" :value="$order->user_id" :title="optional($order->user)->fullname"/>
-                    </x-select>
+                    <span>@lang('Khách hàng'):</span>
+                    <x-link :href="route('admin.user.edit', $order->user_id)" :title="optional($order->user)->fullname" />
                 </div>
                 <div class="mb-3">
                     <label for="">{{ __('Trạng thái') }}:</label>

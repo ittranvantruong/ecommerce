@@ -22,6 +22,10 @@ class PostRepository extends AdminPostRepository implements PostRepositoryInterf
         ->published()
         ->firstOrFail();
 
+        $this->instance->update([
+            'viewed' => $this->instance->viewed + 1
+        ]);
+        
         return $this->instance;
     }
     public function paginate($page = 1, $limit = 10)

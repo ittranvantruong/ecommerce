@@ -3,7 +3,7 @@
     'product-'.$order_detail->detail['product']['id'],
 ]) data-product-id="{{ $order_detail->detail['product']['id'] }}">
     <td class="align-middle">
-        <span class="cursor-pointer remove-item-product" data-id="{{ $order_detail->id }}"><i class="ti ti-x"></i></span>
+        {{-- <span class="cursor-pointer remove-item-product" data-id="{{ $order_detail->id }}"><i class="ti ti-x"></i></span> --}}
         <x-input type="hidden" name="order_detail[id][]" :value="$order_detail->id" />
         <x-input type="hidden" name="order_detail[product_id][]" :value="$order_detail->detail['product']['id']" />
     </td>
@@ -11,7 +11,7 @@
         <x-link :href="route('admin.product.edit', $order_detail->detail['product']['id'])" target="_blank" :title="$order_detail->detail['product']['name']" />
     </td>
     <td class="text-center">
-        <x-input type="number" name="order_detail[product_qty][]" :value="$order_detail->qty" min="1" autocomplete="off"
+        <x-input type="number" name="order_detail[product_qty][]" :value="$order_detail->qty" readonly min="1" autocomplete="off"
         :data-parsley-number-message="__('Trường này phải là số.')"
         :data-parsley-min-message="__('Giá trị phải lớn hơn 1.')"/>
     </td>

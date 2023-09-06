@@ -92,13 +92,6 @@ class OrderService implements OrderServiceInterface
         
         DB::beginTransaction();
         try {
-            $dataOrderDetail = $this->updateOrCreateDataOrderDetail();
-            if(!empty($dataOrderDetail)){
-                $this->data['order_detail'] = $dataOrderDetail;
-                $this->makeNewDataOrderDetail();
-                $this->storeOrderDetail($this->data['order']['id'], $this->orderDetails);
-            }
-            $this->data['order']['sub_total'] = $this->data['order']['total'] = $this->subTotal;
             $order = $this->repository->update($this->data['order']['id'], $this->data['order']);
             DB::commit();
             return $order;
