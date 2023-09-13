@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// order
+Route::controller(App\Api\V1\Http\Controllers\Order\OrderController::class)
+->middleware('auth:sanctum')
+->prefix('/order')
+->as('order.')
+->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
+    Route::put('/cancel', 'cancel')->name('cancel');
+    Route::get('/show/{id}', 'show')->name('show');
+    Route::delete('/delete/{id}', 'delete')->name('delete');
+});
+
+//shopping cart
 Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartController::class)
 ->middleware('auth:sanctum')
 ->prefix('/shopping-cart')

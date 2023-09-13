@@ -22,11 +22,19 @@ class Order extends Model
         'shipping_method' => OrderShippingMethod::class,
     ];
 
+    public function isCompleted(){
+        return $this->status == OrderStatus::Completed;
+    }
+
     public function details(){
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function scopeCurrentAuth($query){
+        return $query->where('user_id', auth()->user()->id);
     }
 }

@@ -9,5 +9,6 @@
     "tooManyRequest": "Quá nhiều yêu cầu xử lý cho endpoint này.",
     "unauthenticate": "Xác thực không thành công.",
     "productNoVariable": "Sản phẩm không có sẵn.",
-    "updateCartNotCampatible": "id phải tương thích với qty cho từng id đã truyền vào"
+    "updateCartNotCampatible": "id phải tương thích với qty cho từng id đã truyền vào",
+    "orderNoDataShoppingCart": "Giỏ hàng chưa có sản phẩm."
 }

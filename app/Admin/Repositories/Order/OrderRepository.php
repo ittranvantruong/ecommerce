@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 class OrderRepository extends EloquentRepository implements OrderRepositoryInterface
 {
 
-    protected $select = [];
-
     public function getModel(){
         return Order::class;
     }

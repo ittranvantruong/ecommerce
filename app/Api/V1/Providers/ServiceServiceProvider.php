@@ -10,7 +10,7 @@ class ServiceServiceProvider extends ServiceProvider
         // 'App\Api\V1\Services\User\UserServiceInterface' => 'App\Api\V1\Services\User\UserService',
         'App\Api\V1\Services\Auth\AuthServiceInterface' => 'App\Api\V1\Services\Auth\AuthService',
         'App\Api\V1\Services\ShoppingCart\ShoppingCartServiceInterface' => 'App\Api\V1\Services\ShoppingCart\ShoppingCartService',
-        // 'App\Api\V1\Services\Order\OrderServiceInterface' => 'App\Api\V1\Services\Order\OrderService',
+        'App\Api\V1\Services\Order\OrderServiceInterface' => 'App\Api\V1\Services\Order\OrderService',
     ];
     /**
      * Register services.
