@@ -14,6 +14,8 @@ class SidebarLeft extends Component
      * @var array
      */
     public $menu;
+
+    public $logo;
     /**
      * Create a new component instance.
      *
@@ -23,6 +25,7 @@ class SidebarLeft extends Component
     {
         //
         $this->menu = $this->traitGetConfigSidebar();
+        $this->logo = app()->make('App\Repositories\Setting\SettingRepositoryInterface')->getValueByKey('site_logo') ?? config('custom.images.logo');
     }
 
     public function routeName($routeName, $param){

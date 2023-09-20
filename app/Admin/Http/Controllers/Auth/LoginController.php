@@ -4,20 +4,31 @@ namespace App\Admin\Http\Controllers\Auth;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Auth\LoginRequest;
+use App\Repositories\Setting\SettingRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     //
     private $login;
+
+    protected $repoSetting;
+
+    public function __construct(SettingRepositoryInterface $repoSetting)
+    {
+        parent::__construct();
+        $this->repoSetting = $repoSetting;
+    }
+
     public function getView(){
         return [
             'index' => 'admin.auth.login'
         ];
     }
-
+    
     public function index(){
-        return view($this->view['index']);
+        $logo = $this->repoSetting->getValueByKey('site_logo') ?? config('custom.images.logo');
+        return view($this->view['index'], compact('logo'));
     }
 
     public function login(LoginRequest $request){

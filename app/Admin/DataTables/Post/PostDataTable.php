@@ -37,7 +37,7 @@ class PostDataTable extends BaseDataTable
         return [
             'action' => 'admin.posts.datatable.action',
             'feature_image' => 'admin.posts.datatable.feature-image',
-            'editlink' => 'admin.posts.datatable.editlink',
+            'edit_link' => 'admin.posts.datatable.edit-link',
             'status' => 'admin.posts.datatable.status',
         ];
     }
@@ -130,7 +130,7 @@ class PostDataTable extends BaseDataTable
         $this->instanceDataTable = $this->instanceDataTable->editColumn('feature_image', $this->view['feature_image']);
     }
     protected function editColumnTitle(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('title', $this->view['editlink']);
+        $this->instanceDataTable = $this->instanceDataTable->editColumn('title', $this->view['edit_link']);
     }
     protected function editColumnStatus(){
         $this->instanceDataTable = $this->instanceDataTable->editColumn('status', $this->view['status']);
