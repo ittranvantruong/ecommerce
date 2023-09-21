@@ -36,7 +36,7 @@ class ProductCategoryDataTable extends BaseDataTable
         return [
             'action' => 'admin.product_categories.datatable.action',
             'edit_link' => 'admin.product_categories.datatable.edit-link',
-            'avatar' => 'admin.product_categories.datatable.avatar',
+            'feature_image' => 'admin.product_categories.datatable.feature-image',
             'status' => 'admin.product_categories.datatable.status',
         ];
     }
@@ -58,7 +58,7 @@ class ProductCategoryDataTable extends BaseDataTable
         // $this->filterColumnCreatedAt();
         $this->editColumnName();
         $this->editColumnCreatedAt();
-        $this->editColumnAvatar();
+        $this->editColumnFeatureImage();
         $this->editColumnStatus();
         $this->addColumnAction();
         $this->rawColumnsNew();
@@ -127,8 +127,8 @@ class ProductCategoryDataTable extends BaseDataTable
         $this->instanceDataTable = $this->instanceDataTable->editColumn('name', $this->view['edit_link']);
     }
 
-    protected function editColumnAvatar(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('avatar', $this->view['avatar']);
+    protected function editColumnFeatureImage(){
+        $this->instanceDataTable = $this->instanceDataTable->editColumn('feature_image', $this->view['feature_image']);
     }
 
     protected function editColumnStatus(){
@@ -143,6 +143,6 @@ class ProductCategoryDataTable extends BaseDataTable
         $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
     }
     protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['name', 'avatar', 'status', 'action']);
+        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['name', 'feature_image', 'status', 'action']);
     }
 }

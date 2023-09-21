@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('name');
             $table->string('slug');
-            $table->text('avatar')->nullable();
+            $table->text('feature_image')->nullable();
             $table->integer('position')->default(0);
             $table->tinyInteger('status')->default(ProductCategoryStatus::Published->value);
             $table->timestamps();

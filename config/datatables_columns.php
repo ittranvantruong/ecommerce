@@ -7,7 +7,7 @@ return [
             'orderable' => false,
             'addClass' => 'align-middle'
         ],
-        'avatar' => [
+        'feature_image' => [
             'title' => 'Hình ảnh',
             'orderable' => false,
             'addClass' => 'text-center align-middle'

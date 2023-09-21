@@ -18,7 +18,7 @@ class ProductReviewResource extends ResourceCollection
             return [
                 'id' => $review->id,
                 'fullname' => optional($review->user)->fullname,
-                'avatar' => asset(optional($review->user)->avatar),
+                'feature_image' => asset(optional($review->user)->feature_image),
                 'content' => $review->content,
                 'rating' => $review->rating
             ];

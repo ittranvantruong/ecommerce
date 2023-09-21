@@ -40,13 +40,13 @@ class ProductCategoryController extends Controller
      *               "id": 7,
      *               "name": "parent 3",
      *               "slug": "parent-3",
-     *               "avatar": null,
+     *               "feature_image": null,
      *               "children": [
      *                   {
      *                       "id": 8,
      *                       "name": "child 3",
      *                       "slug": "child-3",
-     *                       "avatar": null
+     *                       "feature_image": null
      *                   }
      *               ]
      *           }

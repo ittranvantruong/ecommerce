@@ -21,7 +21,7 @@ class ProductCategoryRequest extends BaseRequest
             'parent_id' => ['nullable', 'exists:App\Models\ProductCategory,id'],
             'position' => ['required', 'integer'],
             'status' => ['required', new Enum(ProductCategoryStatus::class)],
-            'avatar' => ['required']
+            'feature_image' => ['required']
             
         ];
     }
@@ -34,7 +34,7 @@ class ProductCategoryRequest extends BaseRequest
             'parent_id' => ['nullable', 'exists:App\Models\ProductCategory,id', new ProductCategoryParent($this->id)],
             'position' => ['nullable', 'integer'],
             'status' => ['required', new Enum(ProductCategoryStatus::class)],
-            'avatar' => ['required'],
+            'feature_image' => ['required'],
             'admin_id' => ['nullable', 'array'],
             'admin_id.*' => ['nullable', 'exists:App\Models\Admin,id']
         ];

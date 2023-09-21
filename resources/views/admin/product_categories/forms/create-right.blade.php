@@ -12,7 +12,7 @@
             {{ __('Avatar') }}
         </div>
         <div class="card-body p-2">
-            <x-input-image-ckfinder name="avatar" showImage="avatar" />
+            <x-input-image-ckfinder name="feature_image" showImage="feature_image" />
         </div>
     </div>
 </div>

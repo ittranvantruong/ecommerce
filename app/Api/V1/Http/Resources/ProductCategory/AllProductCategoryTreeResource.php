@@ -26,7 +26,7 @@ class AllProductCategoryTreeResource extends ResourceCollection
             'id' => $category->id,
             'name' => $category->name,
             'slug' => $category->slug,
-            'avatar' => asset($category->avatar)
+            'feature_image' => asset($category->feature_image)
         ];
         if($category->children && $category->children->count() > 0){
             $data['children'] = $category->children->map(function($category){
