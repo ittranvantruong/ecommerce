@@ -60,7 +60,7 @@
         var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
             maxDeviation: 0,
             min: 0,
-            extraMax: 0.1,
+            extraMax: 0,
             renderer: yRenderer
         }));
 
@@ -72,10 +72,12 @@
         // Create series
         // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
         var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-            name: "Series 1",
+            name: "Statistic Chart",
             xAxis: xAxis,
             yAxis: yAxis,
             valueYField: valueY,
+            fill: am5.color(0x660087),
+            stroke: am5.color(0x660087),
             sequencedInterpolation: true,
             categoryXField: labelName,
             tooltip: am5.Tooltip.new(root, {
@@ -88,16 +90,26 @@
         series.columns.template.setAll({
             cornerRadiusTL: 5,
             cornerRadiusTR: 5,
-            strokeOpacity: 0
+            strokeWidth: 2,
+            // strokeOpacity: 0,
+            // fillOpacity: 0.5
         });
+        series.columns.template.set("fillGradient", am5.LinearGradient.new(root, {
+            stops: [{
+                opacity: 1
+            }, {
+                opacity: 0.6
+            }],
+            rotation: 90
+        }));
+        
+        // series.columns.template.adapters.add("fill", (fill, target) => {
+        //     return chart.get("colors").getIndex(series.columns.indexOf(target));
+        // });
 
-        series.columns.template.adapters.add("fill", (fill, target) => {
-            return chart.get("colors").getIndex(series.columns.indexOf(target));
-        });
-
-        series.columns.template.adapters.add("stroke", (stroke, target) => {
-            return chart.get("colors").getIndex(series.columns.indexOf(target));
-        });
+        // series.columns.template.adapters.add("stroke", (stroke, target) => {
+        //     return chart.get("colors").getIndex(series.columns.indexOf(target));
+        // });
 
         // Set data
         var data = JSON.parse(crawData);
@@ -110,20 +122,6 @@
         series.appear(1000);
         chart.appear(1000, 100);
     }
-    
-    
-
-    
-    
-
-    
-
-    
-
-    
-
-    
-
     
 </script>
 @endpush

@@ -36,7 +36,7 @@ class OrderDetailRepository extends EloquentRepository implements OrderDetailRep
         foreach($period as $item){
             $array[] = [
                 'sell_date' => $item->format('d-m-Y'),
-                'product_qty' => $this->instance[$item->format('d-m-Y')] ?? 0
+                'product_qty' => (int) ( $this->instance[$item->format('d-m-Y')] ?? 0 )
             ];
         }
         return collect($array);

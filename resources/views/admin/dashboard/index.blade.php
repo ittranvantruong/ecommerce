@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @push('custom-css')
     <style>
-        #chartdiv {
+        .draw-chart {
             width: 100%;
             height: 500px;
         }
@@ -121,7 +121,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h3 class="text-center">{{ __('Biểu đồ doanh thu 7 ngày gần đây') }}</h3>
-                            <div id="chartdiv"></div>
+                            <div id="showChartOrder" class="draw-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -129,6 +129,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h3 class="text-center">{{ __('Biểu đồ sản phẩm đã bán trong 7 ngày ') }}</h3>
+                            <div id="showChartProductSold" class="draw-chart"></div>
                         </div>
                     </div>
                 </div>
@@ -136,17 +137,21 @@
         </div>
     </div>
 @endsection
-
+@include('admin.scripts.amchart')
 @push('libs-js')
-    <!-- Resources -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="//cdn.amcharts.com/lib/5/themes/Responsive.js"></script>
+
 @endpush
 
 @push('custom-js')
 <x-input id="dataChartOrder" type="hidden" :value="$chart_order" />
+<x-input id="dataChartProductSold" type="hidden" :value="$chart_product_sold" />
 <!-- Chart code -->
-
+<script>
+    $(document).ready(function(){
+        makeAmchart('showChartOrder', $('#dataChartOrder').val(), 'order_date', 'order_total');
+        makeAmchart('showChartProductSold', $('#dataChartProductSold').val(), 'sell_date', 'product_qty');
+        console.log(JSON.parse($('#dataChartProductSold').val()));
+    })
+</script>
 @endpush
+

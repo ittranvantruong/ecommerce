@@ -39,6 +39,7 @@ class DashboardController extends Controller
         
         $totalProductSold = $this->repoOrderDetail->totalProductSold();
         $chartProductSold = $this->repoOrderDetail->chartProductSold([now()->subDays(7), now()]);
+        // dd($chartProductSold);
         return view($this->view['index'], [
             'statistic_order' => $statisticOrder,
             'total_user' => $totaluser,
