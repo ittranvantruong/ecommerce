@@ -121,7 +121,7 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-        $order = $this->repository->findOrFailWithRelations($id);
+        $order = $this->repository->findOrFailWithRelations($id, ['details']);
         $order = new ShowOrderResource($order);
         return response()->json([
             'status' => 200,
@@ -192,7 +192,7 @@ class OrderController extends Controller
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      * 
-     * @bodyParam id integer required
+     * @pathParam id integer required
      * id đơn hàng. Example: 1
      * 
      * 
@@ -207,8 +207,8 @@ class OrderController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function cancel(OrderRequest $request){
-        $response = $this->service->cancel($request);
+    public function cancel($id){
+        $response = $this->service->cancel($id);
         if($response){
             return response()->json([
                 'status' => 200,

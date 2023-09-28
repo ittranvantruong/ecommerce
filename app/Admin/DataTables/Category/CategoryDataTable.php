@@ -11,26 +11,16 @@ class CategoryDataTable extends BaseDataTable
 {
 
     use GetConfig;
-    /**
-     * Available button actions. When calling an action, the value will be used
-     * as the function name (so it should be available)
-     * If you want to add or disable an action, overload and modify this property.
-     *
-     * @var array
-     */
-    // protected array $actions = ['pageLength', 'excel', 'reset', 'reload'];
-    protected array $actions = ['reset', 'reload'];
 
     public function __construct(
         CategoryRepositoryInterface $repository
     ){
-        parent::__construct();
-
         $this->repository = $repository;
+        
+        parent::__construct();
 
         $this->nameTable = 'categoryTable';
 
-        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -82,26 +72,6 @@ class CategoryDataTable extends BaseDataTable
     }
 
     /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        $this->instanceHtml = $this->builder()
-        ->setTableId($this->nameTable)
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('Bfrtip')
-        ->orderBy(0)
-        ->selectStyleSingle();
-
-        $this->htmlParameters();
-
-        return $this->instanceHtml;
-    }
-
-    /**
      * Get columns.
      *
      * @return array
@@ -109,12 +79,6 @@ class CategoryDataTable extends BaseDataTable
     protected function setCustomColumns(){
         $this->customColumns = $this->traitGetConfigDatatableColumns('category');
     }
-
-    protected function filename(): string
-    {
-        return 'category_' . date('YmdHis');
-    }
-
     
     protected function editColumnName(){
         $this->instanceDataTable = $this->instanceDataTable->editColumn('name', $this->view['edit_link']);

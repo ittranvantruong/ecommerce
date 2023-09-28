@@ -21,7 +21,7 @@ Route::controller(App\Api\V1\Http\Controllers\Order\OrderController::class)
 ->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/store', 'store')->name('store');
-    Route::put('/cancel', 'cancel')->name('cancel');
+    Route::put('/cancel/{id}', 'cancel')->name('cancel');
     Route::get('/show/{id}', 'show')->name('show');
     Route::delete('/delete/{id}', 'delete')->name('delete');
 });

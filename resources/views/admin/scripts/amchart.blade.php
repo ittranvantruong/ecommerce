@@ -76,12 +76,13 @@
             xAxis: xAxis,
             yAxis: yAxis,
             valueYField: valueY,
+            valueXField: labelName,
             fill: am5.color(0x660087),
             stroke: am5.color(0x660087),
             sequencedInterpolation: true,
             categoryXField: labelName,
             tooltip: am5.Tooltip.new(root, {
-                dy: -25,
+                dy: 0,
                 labelText: "{valueY}"
             })
         }));

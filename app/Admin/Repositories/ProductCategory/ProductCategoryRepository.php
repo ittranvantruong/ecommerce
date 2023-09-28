@@ -13,7 +13,7 @@ class ProductCategoryRepository extends EloquentRepository implements ProductCat
     public function getModel(){
         return ProductCategory::class;
     }
-    public function findOrFailWithRelations($id, array $relations = ['admins'])
+    public function findOrFailWithRelations($id, array $relations = [])
     {
         $this->findOrFail($id);
         $this->instance = $this->instance->load($relations);

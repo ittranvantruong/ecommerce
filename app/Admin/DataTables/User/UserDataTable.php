@@ -11,32 +11,22 @@ class UserDataTable extends BaseDataTable
 {
 
     use GetConfig;
-    /**
-     * Available button actions. When calling an action, the value will be used
-     * as the function name (so it should be available)
-     * If you want to add or disable an action, overload and modify this property.
-     *
-     * @var array
-     */
-    // protected array $actions = ['pageLength', 'excel', 'reset', 'reload'];
-    protected array $actions = ['reset', 'reload'];
 
     public function __construct(
         UserRepositoryInterface $repository
     ){
+        $this->repository = $repository;
+        
         parent::__construct();
 
-        $this->repository = $repository;
-
         $this->nameTable = 'userTable';
-
-        $this->configColumnSearch();
+        
     }
 
     public function getView(){
         return [
             'action' => 'admin.users.datatable.action',
-            'edit_link' => 'admin.users.datatable.edit-link',
+            'edit_link' => 'admin.users.datatable.edit-link'
         ];
     }
 
@@ -84,37 +74,12 @@ class UserDataTable extends BaseDataTable
     }
 
     /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        $this->instanceHtml = $this->builder()
-        ->setTableId($this->nameTable)
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('Bfrtip')
-        ->orderBy(0)
-        ->selectStyleSingle();
-
-        $this->htmlParameters();
-
-        return $this->instanceHtml;
-    }
-
-    /**
      * Get columns.
      *
      * @return array
      */
     protected function setCustomColumns(){
         $this->customColumns = $this->traitGetConfigDatatableColumns('user');
-    }
-
-    protected function filename(): string
-    {
-        return 'User_' . date('YmdHis');
     }
 
     protected function filterColumnGender(){

@@ -11,26 +11,15 @@ class OrderDataTable extends BaseDataTable
 {
 
     use GetConfig;
-    /**
-     * Available button actions. When calling an action, the value will be used
-     * as the function name (so it should be available)
-     * If you want to add or disable an action, overload and modify this property.
-     *
-     * @var array
-     */
-    // protected array $actions = ['pageLength', 'excel', 'reset', 'reload'];
-    protected array $actions = ['reset', 'reload'];
 
     public function __construct(
         OrderRepositoryInterface $repository
     ){
+        $this->repository = $repository;
+        
         parent::__construct();
 
-        $this->repository = $repository;
-
         $this->nameTable = 'orderTable';
-
-        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -82,27 +71,7 @@ class OrderDataTable extends BaseDataTable
      */
     public function query()
     {
-        return $this->repository->getQueryBuilderWithRelations();
-    }
-
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        $this->instanceHtml = $this->builder()
-        ->setTableId($this->nameTable)
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('Bfrtip')
-        ->orderBy(0)
-        ->selectStyleSingle();
-
-        $this->htmlParameters();
-
-        return $this->instanceHtml;
+        return $this->repository->getQueryBuilderWithRelations(['user']);
     }
 
     /**

@@ -13,28 +13,20 @@ class ProductDataTable extends BaseDataTable
 {
 
     use GetConfig;
-    /**
-     * Available button actions. When calling an action, the value will be used
-     * as the function name (so it should be available)
-     * If you want to add or disable an action, overload and modify this property.
-     *
-     * @var array
-     */
-    // protected array $actions = ['pageLength', 'excel', 'reset', 'reload'];
-    protected array $actions = ['reset', 'reload'];
+
     protected $repositoryCat;
+
     public function __construct(
         ProductRepositoryInterface $repository,
         ProductCategoryRepositoryInterface $repositoryCat
     ){
+        $this->repository = $repository;
+        
+        $this->repositoryCat = $repositoryCat;
+        
         parent::__construct();
 
-        $this->repository = $repository;
-        $this->repositoryCat = $repositoryCat;
-
         $this->nameTable = 'productTable';
-
-        $this->configColumnSearch();
     }
 
     public function getView(){
@@ -107,27 +99,7 @@ class ProductDataTable extends BaseDataTable
      */
     public function query()
     {
-        return $this->repository->getQueryBuilderHasPermissionWithRelations();
-    }
-
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        $this->instanceHtml = $this->builder()
-        ->setTableId($this->nameTable)
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('Bfrtip')
-        ->orderBy(0)
-        ->selectStyleSingle();
-
-        $this->htmlParameters();
-
-        return $this->instanceHtml;
+        return $this->repository->getQueryBuilderHasPermissionWithRelations(['categories']);
     }
 
     /**
@@ -137,11 +109,6 @@ class ProductDataTable extends BaseDataTable
      */
     protected function setCustomColumns(){
         $this->customColumns = $this->traitGetConfigDatatableColumns('product');
-    }
-
-    protected function filename(): string
-    {
-        return 'products_' . date('YmdHis');
     }
 
     protected function filterColumnCreatedAt(){

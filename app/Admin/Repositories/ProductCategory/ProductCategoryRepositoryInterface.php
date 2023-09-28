@@ -5,7 +5,7 @@ use App\Admin\Repositories\EloquentRepositoryInterface;
 
 interface ProductCategoryRepositoryInterface extends EloquentRepositoryInterface
 {
-    public function findOrFailWithRelations($id, array $relations = ['admins']);
+    public function findOrFailWithRelations($id, array $relations = []);
 
     public function updateAndPermission($id, $data = [], $admin_ids = []);
 

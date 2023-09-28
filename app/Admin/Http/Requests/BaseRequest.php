@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class BaseRequest extends FormRequest
 {
-    protected $validate = [];
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,33 +23,15 @@ class BaseRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->isMethod('GET')) {
-
-            $this->validate = $this->methodGet();
-
-        }elseif($this->isMethod('POST')) {
-
-            $this->validate = $this->methodPost();
-
-        }elseif($this->isMethod('PUT')) {
-
-            $this->validate = $this->methodPut();
-
-        }elseif($this->isMethod('PATCH')) {
-
-            $this->validate = $this->methodPatch();
-
-        }elseif($this->isMethod('DELETE')) {
-
-            $this->validate = $this->methodDelete();
-
-        }elseif($this->isMethod('OPTIONS')) {
-
-            $this->validate = $this->methodOptions();
-            
-        }
-
-        return $this->validate;
+        return match($this->method()) {
+            'GET' => $this->methodGet(),
+            'POST' => $this->methodPost(),
+            'PUT' => $this->methodPut(),
+            'PATCH' => $this->methodPatch(),
+            'DELETE' => $this->methodDelete(),
+            'OPTIONS' => $this->methodOptions(),
+            default => $this->methodGet()
+        };
     }
     /**
      * Get the validation rules that apply to the request.
@@ -59,9 +40,7 @@ class BaseRequest extends FormRequest
      */
     protected function methodGet()
     {
-        return [
-
-        ];
+        return [];
     }
     /**
      * Get the validation rules that apply to the request.

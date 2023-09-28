@@ -88,7 +88,7 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
     public function loadRelations(Product $product, array $relations = []){
         return $product->load($relations);
     }
-    public function getQueryBuilderHasPermissionWithRelations($relations = ['categories']){
+    public function getQueryBuilderHasPermissionWithRelations($relations = []){
         $this->getQueryBuilderWithRelations($relations);
         $admin = auth('admin')->user();
         if(!$admin->isSuperAdmin() || !$admin->isSuperAdmin()){
@@ -100,7 +100,7 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         return $this->instance;
     }
 
-    public function getQueryBuilderWithRelations($relations = ['categories']){
+    public function getQueryBuilderWithRelations($relations = []){
         $this->getQueryBuilderOrderBy();
         if(!empty($relations)){
             $this->instance = $this->instance->with($relations);

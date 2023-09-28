@@ -62,7 +62,7 @@ class ProductCategoryController extends Controller
 
     public function edit($id){
         $productCategories = $this->repository->getFlatTreeNotInNode([$id]);
-        $productCategory = $this->repository->findOrFailWithRelations($id);
+        $productCategory = $this->repository->findOrFailWithRelations($id, ['admins']);
         return view(
             $this->view['edit'], [
                 'product_category' => $productCategory,

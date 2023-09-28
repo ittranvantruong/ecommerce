@@ -70,9 +70,9 @@ class OrderService implements OrderServiceInterface
 
 
     }
-    public function cancel(Request $request){
+    public function cancel($id){
 
-        return $this->repository->cancel($request->input('id'));
+        return $this->repository->cancel($id);
 
     }
 

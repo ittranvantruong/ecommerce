@@ -21,7 +21,7 @@ interface OrderServiceInterface
      * @return boolean
      */
     public function update(Request $request);
-    public function cancel(Request $request);
+    public function cancel($id);
     /**
      * Xóa
      *  

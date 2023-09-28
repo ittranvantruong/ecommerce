@@ -59,12 +59,12 @@ class OrderRepository extends EloquentRepository implements OrderRepositoryInter
         }
         return collect($array);
     }
-    public function findOrFailWithRelations($id, array $relations = ['details', 'user']){
+    public function findOrFailWithRelations($id, array $relations = []){
         $this->findOrFail($id);
         $this->instance = $this->instance->load($relations);
         return $this->instance;
     }
-    public function getQueryBuilderWithRelations($relations = ['user']){
+    public function getQueryBuilderWithRelations($relations = []){
         $this->getQueryBuilder();
         $this->instance = $this->instance->with($relations)->orderBy('id', 'desc');
         return $this->instance;

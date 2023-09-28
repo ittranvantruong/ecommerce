@@ -13,7 +13,7 @@ abstract class BaseDataTable extends DataTable
      *
      * @var array
      */
-    protected $action = ['reset', 'reload'];
+    protected array $actions = ['reset', 'reload'];
     /**
      * Mảng chứa đường dẫn tới views
      *
@@ -68,8 +68,12 @@ abstract class BaseDataTable extends DataTable
         $this->setCustomColumns();
         
         $this->setParameters();
+
+        $this->configColumnSearch();
         
     }
+
+    abstract protected function configColumnSearch();
 
     abstract protected function setCustomColumns();
 
@@ -133,6 +137,26 @@ abstract class BaseDataTable extends DataTable
         }
     }
 
+    /**
+     * Optional method if you want to use html builder.
+     *
+     * @return \Yajra\DataTables\Html\Builder
+     */
+    public function html()
+    {
+        $this->instanceHtml = $this->builder()
+        ->setTableId($this->nameTable)
+        ->columns($this->getColumns())
+        ->minifiedAjax()
+        ->dom('Bfrtip')
+        ->orderBy(0)
+        ->selectStyleSingle();
+
+        $this->htmlParameters();
+
+        return $this->instanceHtml;
+    }
+
     protected function htmlParameters(){
         
         $this->parameters['buttons'] = $this->actions;
@@ -146,5 +170,10 @@ abstract class BaseDataTable extends DataTable
 
         $this->instanceHtml = $this->instanceHtml
         ->parameters($this->parameters);
+    }
+
+    protected function filename(): string
+    {
+        return $this->nameTable .'-' . date('YmdHis');
     }
 }

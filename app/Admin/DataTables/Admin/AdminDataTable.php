@@ -11,25 +11,16 @@ class AdminDataTable extends BaseDataTable
 {
 
     use GetConfig;
-    /**
-     * Available button actions. When calling an action, the value will be used
-     * as the function name (so it should be available)
-     * If you want to add or disable an action, overload and modify this property.
-     *
-     * @var array
-     */
-    protected array $actions = ['reset', 'reload'];
 
     public function __construct(
         AdminRepositoryInterface $repository
     ){
+        $this->repository = $repository;
+        
         parent::__construct();
 
-        $this->repository = $repository;
-
         $this->nameTable = 'adminTable';
-
-        $this->configColumnSearch();
+        
     }
 
     public function getView(){
@@ -80,26 +71,6 @@ class AdminDataTable extends BaseDataTable
     {
         return $this->repository->getQueryBuilderFollowRole();
     }
-
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        $this->instanceHtml = $this->builder()
-        ->setTableId($this->nameTable)
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('Bfrtip')
-        ->orderBy(0);
-
-        $this->htmlParameters();
-
-        return $this->instanceHtml;
-    }
-
     /**
      * Get columns.
      *
@@ -107,11 +78,6 @@ class AdminDataTable extends BaseDataTable
      */
     protected function setCustomColumns(){
         $this->customColumns = $this->traitGetConfigDatatableColumns('admin');
-    }
-
-    protected function filename(): string
-    {
-        return 'Admin_' . date('YmdHis');
     }
 
     protected function filterColumnRoles(){

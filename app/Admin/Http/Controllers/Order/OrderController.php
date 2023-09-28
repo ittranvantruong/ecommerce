@@ -62,7 +62,7 @@ class OrderController extends Controller
         return back()->with('error', __('notifyFail'));
     }
     public function edit($id){
-        $order = $this->repository->findOrFailWithRelations($id);
+        $order = $this->repository->findOrFailWithRelations($id, ['details', 'user']);
         $status = OrderStatus::asSelectArray();
         return view($this->view['edit'], compact('order', 'status'));
     }

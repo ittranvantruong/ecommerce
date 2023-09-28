@@ -68,7 +68,7 @@ class PostController extends Controller
     public function edit($id){
         $categories = $this->repositoryCategory->getFlatTree();
         
-        $post = $this->repository->findOrFailWithRelations($id);
+        $post = $this->repository->findOrFailWithRelations($id, ['categories']);
         return view(
             $this->view['edit'], 
             [

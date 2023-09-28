@@ -13,7 +13,7 @@ class PostRepository extends EloquentRepository implements PostRepositoryInterfa
     public function getModel(){
         return Post::class;
     }
-    public function findOrFailWithRelations($id, array $relations = ['categories']){
+    public function findOrFailWithRelations($id, array $relations = []){
         $this->findOrFail($id);
         $this->instance = $this->instance->load($relations);
         return $this->instance;

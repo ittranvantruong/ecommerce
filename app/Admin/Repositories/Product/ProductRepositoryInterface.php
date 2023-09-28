@@ -23,9 +23,9 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
 
     public function syncCategories(Product $product, array $categoriesId);
 	
-    public function getQueryBuilderHasPermissionWithRelations($relations = ['categories']);
+    public function getQueryBuilderHasPermissionWithRelations($relations = []);
 
-    public function getQueryBuilderWithRelations($relations = ['categories']);
+    public function getQueryBuilderWithRelations($relations = []);
 
     public function getQueryBuilderOrderBy($column = 'id', $sort = 'DESC');
 
