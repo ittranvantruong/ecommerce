@@ -5,12 +5,9 @@ namespace App\Admin\Services\User;
 use App\Admin\Services\User\UserServiceInterface;
 use  App\Admin\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Admin\Traits\Setup;
-use App\Enums\User\UserRoles;
 
 class UserService implements UserServiceInterface
 {
-    use Setup;
     /**
      * Current Object instance
      *

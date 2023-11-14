@@ -4,13 +4,12 @@ namespace App\Admin\DataTables\Order;
 
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
-use App\Admin\Traits\GetConfig;
 use App\Enums\Order\OrderStatus;
 
 class OrderDataTable extends BaseDataTable
 {
 
-    use GetConfig;
+    protected $nameTable = 'orderTable';
 
     public function __construct(
         OrderRepositoryInterface $repository
@@ -18,12 +17,10 @@ class OrderDataTable extends BaseDataTable
         $this->repository = $repository;
         
         parent::__construct();
-
-        $this->nameTable = 'orderTable';
     }
 
-    public function getView(){
-        return [
+    public function setView(){
+        $this->view = [
             'action' => 'admin.orders.datatable.action',
             'edit_link' => 'admin.orders.datatable.edit-link',
             'status' => 'admin.orders.datatable.status',
@@ -31,7 +28,7 @@ class OrderDataTable extends BaseDataTable
         ];
     }
 
-    public function configColumnSearch(){
+    public function setColumnSearch(){
 
         $this->columnAllSearch = [0, 1, 2, 4];
 
@@ -43,24 +40,6 @@ class OrderDataTable extends BaseDataTable
                 'data' => OrderStatus::asSelectArray()
             ],
         ];
-    }
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
-    public function dataTable($query)
-    {
-        $this->instanceDataTable = datatables()->eloquent($query);
-        $this->editColumnId();
-        $this->editColumnTotal();
-        $this->editColumnStatus();
-        $this->editColumnUser();
-        $this->editColumnCreatedAt();
-        $this->addColumnAction();
-        $this->rawColumnsNew();
-        return $this->instanceDataTable;
     }
     
     /**
@@ -74,39 +53,27 @@ class OrderDataTable extends BaseDataTable
         return $this->repository->getQueryBuilderWithRelations(['user']);
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function setCustomColumns(){
-        $this->customColumns = $this->traitGetConfigDatatableColumns('order');
+        $this->customColumns = config('datatables_columns.order', []);
     }
 
-    protected function filename(): string
-    {
-        return 'order_' . date('YmdHis');
+    protected function setCustomEditColumns(){
+        $this->customEditColumns = [
+            'id' => $this->view['edit_link'],
+            'status' => $this->view['status'],
+            'total' => '{{ format_price($total) }}',
+            'user' => $this->view['user'],
+            'created_at' => '{{ date(config("custom.format.date"), strtotime($created_at)) }}'
+        ];
     }
 
-    protected function editColumnId(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('id', $this->view['edit_link']);
+    protected function setCustomAddColumns(){
+        $this->customAddColumns = [
+            'action' => $this->view['action'],
+        ];
     }
-    protected function editColumnStatus(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('status', $this->view['status']);
-    }
-    protected function editColumnTotal(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('total', '{{ format_price($total) }}');
-    }
-    protected function editColumnUser(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('user', $this->view['user']);
-    }
-    protected function editColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('created_at', '{{ date("d-m-Y", strtotime($created_at)) }}');
-    }
-    protected function addColumnAction(){
-        $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
-    }
-    protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['id', 'status', 'user', 'action']);
+
+    protected function setCustomRawColumns(){
+        $this->customRawColumns = ['id', 'status', 'user', 'action'];
     }
 }

@@ -5,16 +5,16 @@ namespace App\Admin\DataTables\Product;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Admin\Repositories\ProductCategory\ProductCategoryRepositoryInterface;
-use App\Admin\Traits\GetConfig;
 use App\Enums\Product\ProductInstock;
 use App\Enums\Product\ProductStatus;
 
 class ProductDataTable extends BaseDataTable
 {
 
-    use GetConfig;
 
     protected $repositoryCat;
+    
+    protected $nameTable = 'productTable';
 
     public function __construct(
         ProductRepositoryInterface $repository,
@@ -26,11 +26,10 @@ class ProductDataTable extends BaseDataTable
         
         parent::__construct();
 
-        $this->nameTable = 'productTable';
     }
 
-    public function getView(){
-        return [
+    public function setView(){
+        $this->view = [
             'action' => 'admin.products.datatable.action',
             'edit_link' => 'admin.products.datatable.edit-link',
             'in_stock' => 'admin.products.datatable.in-stock',
@@ -42,7 +41,7 @@ class ProductDataTable extends BaseDataTable
         ];
     }
 
-    public function configColumnSearch(){
+    public function setColumnSearch(){
 
         $this->columnAllSearch = [2, 3, 4, 6, 8];
 
@@ -67,29 +66,6 @@ class ProductDataTable extends BaseDataTable
             ]
         ];
     }
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
-    public function dataTable($query)
-    {
-        $this->instanceDataTable = datatables()->eloquent($query);
-        $this->filterColumnCreatedAt();
-        $this->filterColumnCategories();
-        $this->editColumnFeatureImage();
-        $this->editColumnName();
-        $this->editColumnPrice();
-        $this->editColumnInStock();
-        $this->editColumnStatus();
-        $this->editColumnCategoreis();
-        $this->editColumnCreatedAt();
-        $this->addColumnCheckbox();
-        $this->addColumnAction();
-        $this->rawColumnsNew();
-        return $this->instanceDataTable;
-    }
     
     /**
      * Get query source of dataTable.
@@ -102,22 +78,42 @@ class ProductDataTable extends BaseDataTable
         return $this->repository->getQueryBuilderHasPermissionWithRelations(['categories']);
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function setCustomColumns(){
-        $this->customColumns = $this->traitGetConfigDatatableColumns('product');
+        $this->customColumns = config('datatables_columns.product', []);
     }
 
-    protected function filterColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->filterColumn('created_at', function($query, $keyword) {
-            
-            $query->whereDate('created_at', date('Y-m-d', strtotime($keyword)));
-
-        });
+    protected function setCustomEditColumns(){
+        $this->customEditColumns = [
+            'name' => $this->view['edit_link'],
+            'feature_image' => $this->view['feature_image'],
+            'in_stock' => $this->view['in_stock'],
+            'price' => $this->view['price'],
+            'status' => $this->view['status'],
+            'categories' => $this->view['categories'],
+            'created_at' => '{{ date(config("custom.format.date"), strtotime($created_at)) }}'
+        ];
     }
+
+    protected function setCustomAddColumns(){
+        $this->customAddColumns = [
+            'checkbox' => $this->view['checkbox'],
+            'action' => $this->view['action']
+        ];
+    }
+
+    protected function setCustomFilterColumns()
+    {
+        $this->customFilterColumns = [
+            'created_at' => function($query, $keyword) {
+                $query->whereDate('created_at', date('Y-m-d', strtotime($keyword)));
+            }
+        ];
+    }
+
+    protected function setCustomRawColumns(){
+        $this->customRawColumns = ['checkbox', 'feature_image', 'name', 'in_stock', 'status', 'categories', 'price', 'action'];
+    }
+
     protected function filterColumnCategories(){
         $this->instanceDataTable = $this->instanceDataTable->filterColumn('categories', function($query, $keyword) {
             $keyword = explode(',', $keyword);
@@ -126,38 +122,5 @@ class ProductDataTable extends BaseDataTable
             });
 
         });
-    }
-    protected function editColumnId(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('id', $this->view['editlink']);
-    }
-    protected function editColumnFeatureImage(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('feature_image', $this->view['feature_image']);
-    }
-    protected function editColumnName(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('name', $this->view['edit_link']);
-    }
-    protected function editColumnInStock(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('in_stock', $this->view['in_stock']);
-    }
-    protected function editColumnStatus(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('status', $this->view['status']);
-    }
-    protected function editColumnPrice(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('price', $this->view['price']);
-    }
-    protected function editColumnCategoreis(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('categories', $this->view['categories']);
-    }
-    protected function editColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('created_at', '{{ date("d-m-Y", strtotime($created_at)) }}');
-    }
-    protected function addColumnCheckbox(){
-        $this->instanceDataTable = $this->instanceDataTable->addColumn('checkbox', $this->view['checkbox']);
-    }
-    protected function addColumnAction(){
-        $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
-    }
-    protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['checkbox', 'feature_image', 'name', 'in_stock', 'status', 'categories', 'price', 'action']);
     }
 }

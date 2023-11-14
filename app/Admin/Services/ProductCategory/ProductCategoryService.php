@@ -5,11 +5,9 @@ namespace App\Admin\Services\ProductCategory;
 use App\Admin\Services\ProductCategory\ProductCategoryServiceInterface;
 use  App\Admin\Repositories\ProductCategory\ProductCategoryRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Admin\Traits\Setup;
 
 class ProductCategoryService implements ProductCategoryServiceInterface
 {
-    use Setup;
     /**
      * Current Object instance
      *

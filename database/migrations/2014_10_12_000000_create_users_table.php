@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->char('code', 50);
             $table->string('slug');
-            $table->unsignedBigInteger('level_id')->nullable();
             $table->char('username', 100)->unique();
             $table->string('fullname');
             $table->char('email', 100)->unique();
@@ -33,7 +32,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            // $table->foreign('level_id')->references('id')->on('user_levels')->onDelete('SET NULL');
         });
     }
 

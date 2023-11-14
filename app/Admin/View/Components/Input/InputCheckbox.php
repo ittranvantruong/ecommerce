@@ -2,8 +2,6 @@
 
 namespace App\Admin\View\Components\Input;
 
-use Illuminate\View\Component;
-
 class InputCheckbox extends Input
 {
     public $label;

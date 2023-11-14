@@ -41,6 +41,14 @@ abstract class BaseDataTable extends DataTable
 
     protected $customColumns = [];
 
+    protected $customEditColumns = [];
+
+    protected $customAddColumns = [];
+
+    protected $customFilterColumns = [];
+
+    protected $customRawColumns = [];
+
     protected $removeColumns = [];
 
     protected $columnAllSearch = [];
@@ -66,20 +74,44 @@ abstract class BaseDataTable extends DataTable
         $this->setView();
         
         $this->setCustomColumns();
+
+        $this->setCustomEditColumns();
+
+        $this->setCustomAddColumns();
+
+        $this->setCustomFilterColumns();
+
+        $this->setCustomRawColumns();
         
         $this->setParameters();
 
-        $this->configColumnSearch();
+        $this->setColumnSearch();
         
     }
 
-    abstract protected function configColumnSearch();
+    abstract protected function setColumnSearch();
 
     abstract protected function setCustomColumns();
 
+    protected function setCustomEditColumns(){
+        $this->customEditColumns = [];
+    }
+
+    protected function setCustomAddColumns(){
+        $this->customAddColumns = [];
+    }
+
+    protected function setCustomFilterColumns(){
+        $this->customFilterColumns = [];
+    }
+
+    protected function setCustomRawColumns(){
+        $this->customRawColumns = [];
+    }
+
     public function getParameters(){
         return $this->parameters ?? [
-            'responsive' => true,
+            // 'responsive' => true,
             'ordering' => false,
             'autoWidth' => false,
             // 'searching' => false,
@@ -91,18 +123,14 @@ abstract class BaseDataTable extends DataTable
         ];
     }
 
-    public function getView(){
-        return $this->view ?? [];
-    }
 
     public function setParameters(){
         return $this->parameters = $this->getParameters();
     }
 
     public function setView(){
-        $this->view = $this->getView();
+        $this->view = [];
     }
-
 
     protected function getColumns()
     {
@@ -125,6 +153,29 @@ abstract class BaseDataTable extends DataTable
         return $this->buildColumns;
 
     }
+
+    protected function customEditColumns(){
+        foreach($this->customEditColumns as $key => $value){
+            $this->instanceDataTable = $this->instanceDataTable->editColumn($key, $value);
+        }
+    }
+
+    protected function customAddColumns(){
+        foreach($this->customAddColumns as $key => $value){
+            $this->instanceDataTable = $this->instanceDataTable->addColumn($key, $value);
+        }
+    }
+
+    protected function customFilterColumns(){
+        foreach($this->customFilterColumns as $key => $value){
+            $this->instanceDataTable = $this->instanceDataTable->filterColumn($key, $value);
+        }
+    }
+
+    protected function customRawColumns(){
+        $this->instanceDataTable = $this->instanceDataTable->rawColumns($this->customRawColumns);
+    }
+
     protected function exportVisiableColumns(){
         if ($this->request && in_array($this->request->get('action'), ['excel', 'csv'])) {
             if ($this->request->get('visible_columns')) {
@@ -135,6 +186,26 @@ abstract class BaseDataTable extends DataTable
                 }
             }
         }
+    }
+
+    protected function startBuilderDataTable($query){
+        $this->instanceDataTable = datatables()->eloquent($query);
+    }
+
+    /**
+     * Build DataTable class.
+     *
+     * @param mixed $query Results from query() method.
+     * @return \Yajra\DataTables\DataTableAbstract
+     */
+    public function dataTable($query)
+    {
+        $this->startBuilderDataTable($query);
+        $this->customEditColumns();
+        $this->customAddColumns();
+        $this->customFilterColumns();
+        $this->customRawColumns();
+        return $this->instanceDataTable;
     }
 
     /**

@@ -13,7 +13,6 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Admin\Services\Product\ProductServiceInterface' => 'App\Admin\Services\Product\ProductService',
         'App\Admin\Services\Category\CategoryServiceInterface' => 'App\Admin\Services\Category\CategoryService',
         'App\Admin\Services\Post\PostServiceInterface' => 'App\Admin\Services\Post\PostService',
-        'App\Admin\Services\User\UserLevelServiceInterface' => 'App\Admin\Services\User\UserLevelService',
         'App\Admin\Services\Order\OrderServiceInterface' => 'App\Admin\Services\Order\OrderService',
     ];
     /**

@@ -4,13 +4,11 @@ namespace App\Admin\DataTables\Admin;
 
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Admin\AdminRepositoryInterface;
-use App\Admin\Traits\GetConfig;
-use App\Enums\Admin\AdminRoles;
 
 class AdminDataTable extends BaseDataTable
 {
 
-    use GetConfig;
+    protected $nameTable = 'adminTable';
 
     public function __construct(
         AdminRepositoryInterface $repository
@@ -18,19 +16,16 @@ class AdminDataTable extends BaseDataTable
         $this->repository = $repository;
         
         parent::__construct();
-
-        $this->nameTable = 'adminTable';
-        
     }
 
-    public function getView(){
-        return [
+    public function setView(){
+        $this->view = [
             'action' => 'admin.admins.datatable.action',
-            'edit-link' => 'admin.admins.datatable.edit-link',
+            'edit_link' => 'admin.admins.datatable.edit-link',
         ];
     }
 
-    public function configColumnSearch(){
+    public function setColumnSearch(){
 
         $this->columnAllSearch = [1, 2, 3, 4, 5];
         $this->columnSearchDate = [5]; 
@@ -42,24 +37,7 @@ class AdminDataTable extends BaseDataTable
             ],
         ];
     }
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
-    public function dataTable($query)
-    {
-        $this->instanceDataTable = datatables()->eloquent($query)->addIndexColumn();
-        $this->filterColumnCreatedAt();
-        $this->filterColumnRoles();
-        $this->editColumnFullname();
-        $this->editColumnRoles();
-        $this->editColumnCreatedAt();
-        $this->addColumnAction();
-        $this->rawColumnsNew();
-        return $this->instanceDataTable;
-    }
+    
     
     /**
      * Get query source of dataTable.
@@ -71,46 +49,32 @@ class AdminDataTable extends BaseDataTable
     {
         return $this->repository->getQueryBuilderFollowRole();
     }
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
+
     protected function setCustomColumns(){
-        $this->customColumns = $this->traitGetConfigDatatableColumns('admin');
+        $this->customColumns = config('datatables_columns.admin', []);
     }
 
-    protected function filterColumnRoles(){
-        $this->instanceDataTable = $this->instanceDataTable
-        ->filterColumn('roles', function($query, $keyword) {
-            $query->where('roles', $keyword);
-        });
+    protected function setCustomEditColumns(){
+        $this->customEditColumns = [
+            'fullname' => $this->view['edit_link'],
+            'roles' => function($admin){
+                return $admin->roles->description();
+            },
+            'created_at' => '{{ date(config("custom.format.date"), strtotime($created_at)) }}'
+        ];
     }
-    protected function filterColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->filterColumn('created_at', function($query, $keyword) {
 
-            $query->whereDate('created_at', date('Y-m-d', strtotime($keyword)));
+    protected function startBuilderDataTable($query){
+        $this->instanceDataTable = datatables()->eloquent($query)->addIndexColumn();
+    }
 
-        });
+    protected function setCustomAddColumns(){
+        $this->customAddColumns = [
+            'action' => $this->view['action'],
+        ];
     }
-    protected function editColumnId(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('id', $this->view['edit-link']);
-    }
-    protected function editColumnFullname(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('fullname', $this->view['edit-link']);
-    }
-    protected function editColumnRoles(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('roles', function($admin){
-            return $admin->roles->description();
-        });
-    }
-    protected function editColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('created_at', '{{ date("d-m-Y", strtotime($created_at)) }}');
-    }
-    protected function addColumnAction(){
-        $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
-    }
-    protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['fullname', 'action']);
+
+    protected function setCustomRawColumns(){
+        $this->customRawColumns = ['fullname', 'action'];
     }
 }

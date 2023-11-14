@@ -4,13 +4,12 @@ namespace App\Admin\DataTables\Category;
 
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
-use App\Admin\Traits\GetConfig;
 use App\Enums\Category\CategoryStatus;
 
 class CategoryDataTable extends BaseDataTable
 {
 
-    use GetConfig;
+    protected $nameTable = 'categoryTable';
 
     public function __construct(
         CategoryRepositoryInterface $repository
@@ -18,47 +17,28 @@ class CategoryDataTable extends BaseDataTable
         $this->repository = $repository;
         
         parent::__construct();
-
-        $this->nameTable = 'categoryTable';
-
     }
 
-    public function getView(){
-        return [
+    public function setView(){
+        $this->view = [
             'action' => 'admin.categories.datatable.action',
             'edit_link' => 'admin.categories.datatable.edit-link',
             'status' => 'admin.categories.datatable.status',
         ];
     }
 
-    public function configColumnSearch(){
+    public function setColumnSearch(){
 
-        $this->columnAllSearch = [0, 1];
+        $this->columnAllSearch = [0];
         
-        $this->columnSearchSelect = [
-            [
-                'column' => 1,
-                'data' => CategoryStatus::asSelectArray()
-            ],
-        ];
+        // $this->columnSearchSelect = [
+        //     [
+        //         'column' => 1,
+        //         'data' => CategoryStatus::asSelectArray()
+        //     ],
+        // ];
     }
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
-    public function dataTable($query)
-    {
-        $this->instanceDataTable = datatables()->collection($query);
-        $this->editColumnName();
-        $this->editColumnStatus();
-        $this->editColumnCreatedAt();
-        $this->addColumnAction();
-        $this->rawColumnsNew();
-        return $this->instanceDataTable;
-    }
-    
+
     /**
      * Get query source of dataTable.
      *
@@ -71,28 +51,29 @@ class CategoryDataTable extends BaseDataTable
         return $query;
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function setCustomColumns(){
-        $this->customColumns = $this->traitGetConfigDatatableColumns('category');
+        $this->customColumns = config('datatables_columns.category', []);
     }
-    
-    protected function editColumnName(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('name', $this->view['edit_link']);
+
+    protected function setCustomEditColumns(){
+        $this->customEditColumns = [
+            'name' => $this->view['edit_link'],
+            'status' => $this->view['status'],
+            'created_at' => '{{ date(config("custom.format.date"), strtotime($created_at)) }}'
+        ];
     }
-    protected function editColumnStatus(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('status', $this->view['status']);
+
+    protected function startBuilderDataTable($query){
+        $this->instanceDataTable = datatables()->collection($query);
     }
-    protected function editColumnCreatedAt(){
-        $this->instanceDataTable = $this->instanceDataTable->editColumn('created_at', '{{ date("d-m-Y", strtotime($created_at)) }}');
+
+    protected function setCustomAddColumns(){
+        $this->customAddColumns = [
+            'action' => $this->view['action'],
+        ];
     }
-    protected function addColumnAction(){
-        $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
-    }
-    protected function rawColumnsNew(){
-        $this->instanceDataTable = $this->instanceDataTable->rawColumns(['name', 'status', 'action']);
+
+    protected function setCustomRawColumns(){
+        $this->customRawColumns = ['name', 'status', 'action'];
     }
 }

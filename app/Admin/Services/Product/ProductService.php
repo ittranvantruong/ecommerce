@@ -5,13 +5,11 @@ namespace App\Admin\Services\Product;
 use App\Admin\Services\Product\ProductServiceInterface;
 use  App\Admin\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Admin\Traits\Setup;
 use App\Enums\Product\ProductStatus;
 use Illuminate\Support\Facades\DB;
 
 class ProductService implements ProductServiceInterface
 {
-    use Setup;
     /**
      * Current Object instance
      *
