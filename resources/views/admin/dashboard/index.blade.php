@@ -137,12 +137,13 @@
         </div>
     </div>
 @endsection
-@include('admin.scripts.amchart')
+
 @push('libs-js')
 
 @endpush
 
 @push('custom-js')
+@include('admin.scripts.amchart')
 <x-input id="dataChartOrder" type="hidden" :value="$chart_order" />
 <x-input id="dataChartProductSold" type="hidden" :value="$chart_product_sold" />
 <!-- Chart code -->
